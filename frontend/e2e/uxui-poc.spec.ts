@@ -12,14 +12,16 @@ async function dismissOverlay(page: any) {
 }
 
 test.describe("UXUI-POC", () => {
-  test("full game flow with neon design", async ({ browser }) => {
+  test("full game flow on mobile", { timeout: 120000 }, async ({ browser }) => {
     const aliceCtx = await browser.newContext({
-      viewport: { width: 1280, height: 720 },
-      recordVideo: { dir: "test-results/videos", size: { width: 1280, height: 720 } },
+      viewport: { width: 390, height: 844 },
+      deviceScaleFactor: 2,
+      recordVideo: { dir: "test-results/videos", size: { width: 390, height: 844 } },
     });
     const bobCtx = await browser.newContext({
-      viewport: { width: 1280, height: 720 },
-      recordVideo: { dir: "test-results/videos", size: { width: 1280, height: 720 } },
+      viewport: { width: 390, height: 844 },
+      deviceScaleFactor: 2,
+      recordVideo: { dir: "test-results/videos", size: { width: 390, height: 844 } },
     });
 
     const alicePage = await aliceCtx.newPage();
@@ -28,15 +30,15 @@ test.describe("UXUI-POC", () => {
     await alicePage.goto("/");
     await dismissOverlay(alicePage);
     await expect(alicePage.getByText("Smart Trip")).toBeVisible();
-    await pause(500);
+    await pause(1200);
 
     await alicePage.fill("input[placeholder='Your name']", "Alice");
     await alicePage.fill("input[placeholder='Your age']", "12");
-    await pause(300);
+    await pause(800);
     await alicePage.getByText("Create Game").click();
 
-    await expect(alicePage.getByText("Waiting Room")).toBeVisible({ timeout: 10000 });
-    await pause(500);
+    await expect(alicePage.getByText("Waiting Room")).toBeVisible({ timeout: 15000 });
+    await pause(1200);
 
     const gameUrl = alicePage.url();
     const gameId = new URL(gameUrl).pathname.split("/game/")[1];
@@ -46,26 +48,27 @@ test.describe("UXUI-POC", () => {
     await bobPage.fill("input[placeholder='Your name']", "Bob");
     await bobPage.fill("input[placeholder='Your age']", "13");
     await bobPage.evaluate((gid) => { window.prompt = () => gid; }, gameId);
-    await pause(300);
+    await pause(600);
     await bobPage.getByText("Join Game").click();
-    await expect(bobPage.getByText("Waiting Room")).toBeVisible({ timeout: 10000 });
-    await pause(800);
+    await expect(bobPage.getByText("Waiting Room")).toBeVisible({ timeout: 15000 });
+    await pause(1500);
 
     await alicePage.getByText("Start Game").click();
 
     for (let q = 1; q <= 5; q++) {
       await expect(alicePage.getByText(`Question ${q} of`)).toBeVisible({ timeout: 10000 });
-      await pause(500);
+      await pause(1000);
       await alicePage.locator("button:has-text('A.')").first().click();
-      await pause(300);
+      await pause(600);
       await bobPage.locator("button:has-text('A.')").first().click();
-      await pause(500);
+      await pause(800);
     }
 
     await expect(alicePage.getByText("Game Over!")).toBeVisible({ timeout: 10000 });
-    await pause(800);
+    await pause(1500);
     await expect(alicePage.getByText(/Winner:/)).toBeVisible();
     await expect(alicePage.getByText("Play Again")).toBeVisible();
+    await pause(1000);
 
     await aliceCtx.close();
     await bobCtx.close();

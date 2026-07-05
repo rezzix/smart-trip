@@ -26,6 +26,16 @@ timestamp: 2026-07-05T00:00:00Z
 - Feedback is immediate: button press shows visual response within 100ms.
 - Error states show a clear message with a retry option.
 
+## Responsive & Mobile-First Design
+
+- Mobile phone is the primary display target. All screens must be usable on devices as small as 360px wide.
+- Layout uses a single-column stack on mobile; wider screens may show elements side by side when beneficial.
+- Touch targets must be at least 44x44px (accessibility guideline).
+- All interactive elements are thumb-reachable — primary actions placed in the bottom half of the screen.
+- Text is readable without zooming on a 360px viewport.
+- Horizontal scrolling is never required.
+- Content is spaced with generous padding (`py-20` / `gap-8`) so fields and buttons are fully visible without scrolling the page.
+
 ## Animations
 
 ### Decorative

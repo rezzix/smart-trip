@@ -29,7 +29,7 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
 
   const {
     screen, players, isHost, playerId, question, roundResult,
-    finalScores, winner, error, sendMessage,
+    finalScores, winner, isTie, error, sendMessage,
   } = useGameStore();
 
   useEffect(() => {
@@ -266,9 +266,9 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-2xl font-bold podium-1"
+              className={`text-2xl font-bold ${isTie ? "text-[#ffdd00]" : "podium-1"}`}
             >
-              Winner: {winner}
+              {isTie ? "It's a tie!" : `Winner: ${winner}`}
             </motion.p>
 
             <div className="flex flex-col gap-3 w-80">

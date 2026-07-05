@@ -40,6 +40,7 @@ interface GameState {
   roundResult: RoundResult | null;
   finalScores: FinalScore[];
   winner: string | null;
+  isTie: boolean;
   error: string | null;
   ws: WebSocket | null;
 
@@ -69,6 +70,7 @@ const initialState = {
   roundResult: null as RoundResult | null,
   finalScores: [] as FinalScore[],
   winner: null as string | null,
+  isTie: false,
   error: null as string | null,
   ws: null as WebSocket | null,
 };
@@ -115,7 +117,7 @@ export const useGameStore = create<GameState>((set, get) => ({
           set({ roundResult: msg.payload });
           break;
         case "round_end":
-          set({ finalScores: msg.payload.final_scores, winner: msg.payload.winner, screen: "results" });
+          set({ finalScores: msg.payload.final_scores, winner: msg.payload.winner, isTie: msg.payload.is_tie ?? false, screen: "results" });
           break;
         case "error":
           set({ error: msg.payload.code });

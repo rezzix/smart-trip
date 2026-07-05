@@ -167,13 +167,23 @@ async def _send_results(manager: ConnectionManager, game_id: str, round_service:
 
 
 async def _send_round_end(manager: ConnectionManager, game_id: str, players):
+    if not players:
+        return
+    sorted_ps = sorted(players, key=lambda p: p.score, reverse=True)
+    top_score = sorted_ps[0].score
+    tied = [p for p in sorted_ps if p.score == top_score]
+    if len(tied) > 1:
+        winner = "Tie"
+    else:
+        winner = tied[0].name
     await manager.broadcast(game_id, {
         "type": "round_end",
         "payload": {
             "final_scores": [
                 {"player_id": p.id, "name": p.name, "score": p.score}
-                for p in sorted(players, key=lambda p: p.score, reverse=True)
+                for p in sorted_ps
             ],
-            "winner": max(players, key=lambda p: p.score).name if players else None,
+            "winner": winner,
+            "is_tie": len(tied) > 1,
         },
     })

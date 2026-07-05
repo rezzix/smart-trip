@@ -38,11 +38,16 @@ Follow the charter's dev conventions:
 
 ### End-to-End Tests (Playwright)
 - Write a Playwright e2e test for every milestone that covers the main user flows.
-- Tests go in `frontend/e2e/` directory.
+- Tests go in `frontend/e2e/` directory named `<milestone>.spec.ts` (e.g. `poc.spec.ts`, `mvp.spec.ts`).
 - The Playwright config must launch both the frontend and backend before running.
 - If errors occur, fix them before proceeding.
-- Record a video of the e2e test run (`playwright.config.ts` should set `captureVideo: true` for the test).
-- Commit the video to `docs/e2e/videos/` as reference.
+
+### Video Recording
+- When the test uses `browser.newContext()`, pass `recordVideo: { dir: "test-results/videos", size: { width: 1280, height: 720 } }` to each context.
+- Add short `pause()` calls (300–500ms) between user actions so the video is watchable.
+- After all tests pass, copy the generated `.webm` files from `test-results/videos/` to `docs/e2e/videos/`.
+- Rename each video to `<milestone>-<description>.webm` (e.g. `poc-alice.webm`, `poc-bob.webm`, `mvp-lobby.webm`).
+- Commit the videos and reference them in the GitHub issue comments.
 
 ## 5. Update Documentation (State)
 

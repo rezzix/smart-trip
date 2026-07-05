@@ -34,6 +34,7 @@ At the end of development, Smart Trip should:
 - [Architecture](architecture.md) — system architecture and engine design
 - [Tech Stack](tech-stack.md) — backend, frontend, and tooling
 - [Design & Navigation](design-and-navigation.md) — UX principles and game flow
+- [UX & UI Design](ux-ui.md) — visual style, animations, audio, accessibility
 - [Testing Strategy](testing-strategy.md) — test types, coverage, simulation
 - [Modules & Sub-modules](modules.md) — project structure and module specifications
-- [Milestones](milestones.md) — scaffold, POC, MVP, and incremental releases
+- [Milestones](milestones.md) — scaffold, POC, UXUI-POC, MVP, and incremental releases

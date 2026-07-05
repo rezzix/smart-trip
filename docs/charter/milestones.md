@@ -40,6 +40,26 @@ A version of the application with at least core functionality working and testab
 | Tests | Unit tests for engine, integration tests for API (REST + WebSocket), one game simulation test with 2+ virtual players |
 | Data | Seed JSON for 5 cities, 20 questions (one category, e.g. Geography), 2 badges |
 
+## UXUI-POC (UX & UI Proof of Concept)
+
+A visual and interactive design pass that makes the application suitable for demos and lays the foundation for user experience in future iterations.
+
+**Goal:** All screens redesigned with neon/synthwave visual style, decorative + functional animations, and UI sound effects.
+
+**Design reference:** `docs/charter/ux-ui.md`
+
+| Area | Deliverable |
+|------|-------------|
+| Visual style | Neon/synthwave theme applied to all screens: dark backgrounds, neon accents (cyan, pink, purple), glowing borders, gradient overlays |
+| Landing page | Animated particle background, glowing title, neon inputs and buttons |
+| Lobby | Neon player list with status dots, pulsing Start button, prominent Game ID display |
+| Question screen | Dark cards with neon borders, animated timer ring, correct/wrong flash feedback |
+| Results screen | Podium-style leaderboard, neon gold/silver/bronze, animated score count-up |
+| Animations | Decorative: floating particles, gradient shifts, pulsing glows. Functional: screen transitions, timer countdown, answer feedback, stagger-in scores |
+| Audio | UI sound effects: button clicks, correct/wrong, timer warning, round end, game start. Stored in `assets/audio/ui/` |
+| Accessibility | `prefers-reduced-motion` support, focus rings, 4.5:1 contrast, audio never required for gameplay |
+| Tests | Playwright e2e test with video recording at 1280x720, pauses between actions, saved to `docs/e2e/videos/uxui-poc-*.webm` |
+
 ## MVP (Minimum Viable Product)
 
 An extended version with main functionality working and design elements all in place.

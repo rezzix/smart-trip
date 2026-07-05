@@ -28,12 +28,12 @@ def test_join_room(game):
     assert len(updated.players) == 2
 
 
-def test_join_room_succeeds_when_game_not_started(game):
+def test_join_room_fails_when_game_started(game):
     room = game.create_room("Alice", 12)
     result = game.start_game(room.id, room.players[0].id)
-    assert result is None
+    assert result is not None
     player = game.join_room(room.id, "Bob", 13)
-    assert player is not None
+    assert player is None
 
 
 def test_start_game_requires_host(game):
@@ -42,13 +42,14 @@ def test_start_game_requires_host(game):
     assert result is None
 
 
-def test_start_game_requires_two_players(game):
+def test_start_game_succeeds_alone(game):
     room = game.create_room("Alice", 12)
     result = game.start_game(room.id, room.players[0].id)
-    assert result is None
+    assert result is not None
+    assert result.status == RoomStatus.PLAYING
 
 
-def test_start_game_succeeds(game):
+def test_start_game_succeeds_with_two(game):
     room = game.create_room("Alice", 12)
     game.join_room(room.id, "Bob", 13)
     result = game.start_game(room.id, room.players[0].id)

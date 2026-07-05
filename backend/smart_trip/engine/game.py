@@ -60,7 +60,7 @@ class GameService:
             return None
         if room.host_id != host_id:
             return None
-        if len(room.players) < 2:
+        if len(room.players) < 1:
             return None
 
         room.status = RoomStatus.PLAYING

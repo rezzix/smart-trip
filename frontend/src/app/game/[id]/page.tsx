@@ -145,7 +145,7 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
               </div>
             </div>
 
-            {isHost && players.length >= 2 && (
+            {isHost && (
               <motion.button
                 type="button"
                 className="neon-btn neon-btn-pink neon-btn-start"
@@ -155,12 +155,6 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
               >
                 Start Game
               </motion.button>
-            )}
-
-            {isHost && players.length < 2 && (
-              <p className="text-sm" style={{ color: "rgba(255,0,170,0.6)" }}>
-                Waiting for at least 2 players...
-              </p>
             )}
           </motion.div>
         </main>

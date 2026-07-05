@@ -16,7 +16,7 @@ timestamp: 2026-07-04T00:00:00Z
 - Any player with the link may join.
 - The host can: rename game, kick players, change settings, start game.
 - The host chooses which age range to allow when creating a game: all ages or a specific age range.
-- The game cannot start until the minimum of 2 players has joined.
+- The game can start with a single player. Additional players can still join before the host starts.
 - Once started, joining is disabled.
 - Players who join can see the selected age range before joining.
 - If no age range is set, all ages are allowed.

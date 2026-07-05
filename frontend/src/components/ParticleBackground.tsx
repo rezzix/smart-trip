@@ -78,6 +78,7 @@ export default function ParticleBackground() {
     <canvas
       ref={canvasRef}
       className="pointer-events-none fixed inset-0 z-0"
+      style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0, pointerEvents: "none" }}
       aria-hidden="true"
     />
   );

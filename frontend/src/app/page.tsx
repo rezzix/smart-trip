@@ -65,7 +65,7 @@ export default function Home() {
   return (
     <>
       <ParticleBackground />
-      <main className="relative z-10 mx-auto flex max-w-sm flex-col items-center gap-4 px-4 pt-12 pb-12">
+      <main className="relative z-10 mx-auto flex max-w-sm flex-col items-center gap-3 px-4 pt-6 pb-12">
         <h1 className="glow-title text-4xl font-bold tracking-tight">Smart Trip</h1>
         <p className="text-sm" style={{ color: "rgba(0,240,255,0.6)" }}>
           Online multiplayer educational game

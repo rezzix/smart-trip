@@ -97,12 +97,12 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
     return (
       <>
         <ParticleBackground />
-        <main className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-6 px-6 py-20">
+        <main className="relative z-10 flex min-h-dvh flex-col items-center justify-between px-6 pt-16 pb-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4 }}
-            className="flex flex-col items-center gap-8"
+            className="flex w-full max-w-sm flex-col items-center gap-6"
           >
             <h2 className="glow-title-pink text-4xl font-bold">Waiting Room</h2>
 
@@ -148,7 +148,7 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
             {isHost && (
               <motion.button
                 type="button"
-                className="neon-btn neon-btn-pink neon-btn-start"
+                className="neon-btn neon-btn-pink neon-btn-start mt-8"
                 onClick={() => { playClick(); sendMessage("start_game"); }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -247,7 +247,7 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
     return (
       <>
         <ParticleBackground />
-        <main className="relative z-10 flex min-h-screen flex-col items-start justify-start gap-8 px-6 py-20 overflow-y-auto">
+        <main className="relative z-10 flex min-h-dvh flex-col items-center justify-between px-6 pt-12 pb-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -295,7 +295,7 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.2 }}
-              className="neon-btn neon-btn-pink inline-block text-center"
+              className="neon-btn neon-btn-pink mt-8 inline-block text-center"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={playClick}

@@ -65,49 +65,47 @@ export default function Home() {
   return (
     <>
       <ParticleBackground />
-      <main style={{ position: "relative", zIndex: 10, display: "flex", flexDirection: "column", alignItems: "center", gap: 12, maxWidth: 384, marginInline: "auto", padding: "24px 16px 48px" }}>
-        <h1 className="glow-title" style={{ fontSize: 36, fontWeight: 700, letterSpacing: "-0.025em", margin: 0 }}>Smart Trip</h1>
-        <p style={{ fontSize: 14, color: "rgba(0,240,255,0.6)", margin: 0 }}>Online multiplayer educational game</p>
+      <main className="relative z-10 flex min-h-dvh flex-col items-center gap-3 px-4 pt-24 pb-8" style={{ maxWidth: 384, marginInline: "auto" }}>
+        <h1 className="glow-title text-4xl font-bold tracking-tight">Smart Trip</h1>
+        <p style={{ fontSize: 14, color: "rgba(0,240,255,0.6)" }}>Online multiplayer educational game</p>
 
         <input
-          className="neon-input"
-          style={{ width: "100%" }}
+          className="neon-input w-full"
           placeholder="Your name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <input
-          className="neon-input"
-          style={{ width: "100%" }}
+          className="neon-input w-full"
           placeholder="Your age"
           type="number"
           value={age}
           onChange={(e) => setAge(e.target.value)}
         />
 
-        {error && <p style={{ fontSize: 14, color: "#ff4444", margin: 0 }}>{error}</p>}
+        {error && <p style={{ fontSize: 14, color: "#ff4444" }}>{error}</p>}
 
-        <button
-          type="button"
-          className="neon-btn"
-          style={{ width: "100%" }}
-          disabled={!name || !age}
-          onClick={handleCreate}
-        >
-          Create Game
-        </button>
-        <button
-          type="button"
-          className="neon-btn neon-btn-pink"
-          style={{ width: "100%" }}
-          disabled={!name || !age}
-          onClick={() => {
-            const id = prompt("Enter game ID:");
-            if (id) handleJoinWithId(id);
-          }}
-        >
-          Join Game
-        </button>
+        <div className="mt-auto flex w-full flex-col gap-3">
+          <button
+            type="button"
+            className="neon-btn w-full"
+            disabled={!name || !age}
+            onClick={handleCreate}
+          >
+            Create Game
+          </button>
+          <button
+            type="button"
+            className="neon-btn neon-btn-pink w-full"
+            disabled={!name || !age}
+            onClick={() => {
+              const id = prompt("Enter game ID:");
+              if (id) handleJoinWithId(id);
+            }}
+          >
+            Join Game
+          </button>
+        </div>
       </main>
     </>
   );

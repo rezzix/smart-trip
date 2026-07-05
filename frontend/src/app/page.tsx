@@ -65,15 +65,17 @@ export default function Home() {
   return (
     <>
       <ParticleBackground />
-      <main className="relative z-10 flex min-h-screen flex-col items-center justify-start gap-8 px-6 py-16 pt-24 overflow-y-auto">
-        <h1 className="glow-title text-6xl font-bold tracking-tight" style={{ animationDelay: "0s" }}>
-          Smart Trip
-        </h1>
-        <p className="fade-in-up text-lg" style={{ animationDelay: "0.2s", color: "rgba(0,240,255,0.7)" }}>
-          Online multiplayer educational game
-        </p>
+      <main className="relative z-10 flex min-h-dvh flex-col items-center gap-6 px-6 pt-12 pb-8 overflow-y-auto">
+        <div className="flex flex-col items-center gap-3">
+          <h1 className="glow-title text-4xl sm:text-6xl font-bold tracking-tight" style={{ animationDelay: "0s" }}>
+            Smart Trip
+          </h1>
+          <p className="fade-in-up text-sm sm:text-lg" style={{ animationDelay: "0.2s", color: "rgba(0,240,255,0.7)" }}>
+            Online multiplayer educational game
+          </p>
+        </div>
 
-        <div className="fade-in-up flex w-full max-w-sm flex-col gap-4" style={{ animationDelay: "0.4s" }}>
+        <div className="fade-in-up flex w-full max-w-sm flex-col gap-3" style={{ animationDelay: "0.4s" }}>
           <input
             className="neon-input"
             placeholder="Your name"
@@ -89,10 +91,12 @@ export default function Home() {
           />
         </div>
 
-        <div className="fade-in-up flex gap-4" style={{ animationDelay: "0.6s" }}>
+        {error && <p className="fade-in-up text-red-400 text-sm">{error}</p>}
+
+        <div className="fade-in-up mt-auto flex w-full max-w-sm gap-3" style={{ animationDelay: "0.6s" }}>
           <button
             type="button"
-            className="neon-btn"
+            className="neon-btn flex-1"
             disabled={!name || !age}
             onClick={handleCreate}
           >
@@ -100,7 +104,7 @@ export default function Home() {
           </button>
           <button
             type="button"
-            className="neon-btn neon-btn-pink"
+            className="neon-btn neon-btn-pink flex-1"
             disabled={!name || !age}
             onClick={() => {
               const id = prompt("Enter game ID:");
@@ -110,8 +114,6 @@ export default function Home() {
             Join Game
           </button>
         </div>
-
-        {error && <p className="fade-in-up text-red-400">{error}</p>}
       </main>
     </>
   );

@@ -1,0 +1,63 @@
+---
+name: milestone-developer
+description: Instructions for developing a project milestone — scaffold, implement, document, update GitHub project board, and create issues.
+---
+
+# Milestone Developer
+
+Follow these steps every time you are asked to develop a milestone (scaffold, POC, MVP, v1.x, etc.).
+
+---
+
+## 1. Read the Milestone Spec
+
+Open `docs/charter/milestones.md` and read the deliverable table for the requested milestone. Every decision must align with the charter (tech stack, architecture, business rules, conventions).
+
+## 2. Plan Before You Build
+
+- Open `docs/state/` to understand what is currently implemented.
+- Break the milestone into discrete tasks (one per deliverable cell in the milestone table).
+- For each task, identify which charter sections apply (tech choices, architecture patterns, business rules).
+
+## 3. Implement
+
+Follow the charter's dev conventions:
+- Type hints, SOLID, clean architecture, small files, clear naming.
+- Proceed task by task. Each task must leave the project runnable.
+- Use conventional commits: `feat:`, `fix:`, `chore:`, `docs:`, `test:`, `refactor:`.
+
+## 4. Test
+
+- Run the full test suite after every task: `cd backend && uv run pytest`.
+- Verify manually where applicable (boot server, hit endpoint, check response).
+- Update `docs/state/test-plans.md` if new tests are added or existing ones change status.
+
+## 5. Update Documentation (State)
+
+After the milestone is complete, update every relevant file in `docs/state/`:
+
+| File | What to update |
+|------|----------------|
+| `index.md` | Advancement summary table and changelog entry |
+| `development-status.md` | Module table (mark as implemented), entity diagrams if new modules were built, list of implemented files |
+| `test-plans.md` | Mark test plans as executed with pass/fail and date |
+| `api-endpoints.md` | Move endpoints from Planned to Implemented, add any new endpoints |
+| `seeding-and-test-data.md` | Note any seed data or test fixtures created |
+| `quickstart.md` | Ensure setup/run instructions match reality |
+
+## 6. Update GitHub Project Board
+
+Project board: https://github.com/users/rezzix/projects/9
+
+For each task in the milestone:
+1. Create a GitHub issue describing the task.
+2. Add the issue to the project board with the appropriate status.
+3. As you work, comment on the issue with implementation notes.
+4. When ready for review, move the card to **"In Review"** status.
+5. If a task cannot be completed or reveals a new required task, create a backlog issue tagged for the developer or another agent to fix.
+
+## 7. Wrap Up
+
+- Commit all changes with a conventional commit message summarizing the milestone.
+- Optionally generate a brief milestone summary for the changelog.
+- Never update `docs/charter/` unless explicitly asked — that folder is stable.

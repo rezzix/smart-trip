@@ -6,25 +6,28 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "e2e": "playwright test",
+    "e2e:headed": "playwright test --headed"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.0.0",
+    "framer-motion": "^11.0.0",
     "next": "^15.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "zustand": "^5.0.0",
-    "@tanstack/react-query": "^5.0.0",
-    "framer-motion": "^11.0.0"
+    "zustand": "^5.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
+    "@eslint/eslintrc": "^3.0.0",
+    "@playwright/test": "^1.61.1",
+    "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "tailwindcss": "^4.0.0",
-    "@tailwindcss/postcss": "^4.0.0",
     "eslint": "^9.0.0",
-    "@eslint/eslintrc": "^3.0.0"
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.0.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

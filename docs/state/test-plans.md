@@ -8,16 +8,26 @@ timestamp: 2026-07-04T00:00:00Z
 
 # Test Plans
 
-> **Note:** No tests have been written yet. This document tracks the planned test coverage per module as implementation progresses.
+> **Note:** This document tracks test coverage per module.
 
 ## Test Infrastructure
 
 | Item | Status |
 |------|--------|
-| pytest configured | Not started |
+| pytest configured | Done |
+| Playwright e2e | Done |
 | PlayerSimulator utility | Not started |
 | Test fixtures | Not started |
 | CI test runner | Not started |
+
+## E2E Tests
+
+| Test | File | Status |
+|------|------|--------|
+| Welcome page renders with title and buttons | `frontend/e2e/scaffold.spec.ts` | Done — 2 passed (1.0s) |
+| Backend health endpoint | `frontend/e2e/scaffold.spec.ts` | Done |
+
+Video: `docs/e2e/videos/scaffold-welcome-page.webm`
 
 ## Per-Module Test Plans
 

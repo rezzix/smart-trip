@@ -17,6 +17,7 @@ okf_version: "0.1"
 | Backend scaffold | Done |
 | Frontend scaffold | Done |
 | Tests (pytest) | Done (2 passing) |
+| E2E (Playwright) | Done (2 passing) |
 | Seed data | Not started |
 | CI/CD | Not started |
 
@@ -33,3 +34,4 @@ okf_version: "0.1"
 |------|--------|
 | 2026-07-04 | Project initialized, charter created, state folder created |
 | 2026-07-04 | Scaffold milestone complete: backend boots, frontend renders, tests pass |
+| 2026-07-05 | Playwright e2e tests added: welcome page + health check, video recorded |

@@ -20,4 +20,5 @@ Thumbs.db
 
 # Project
 frontend/package.json.tmp
+frontend/test-results/
 docs/.obsidian/

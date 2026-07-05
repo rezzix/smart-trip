@@ -28,9 +28,18 @@ Follow the charter's dev conventions:
 
 ## 4. Test
 
-- Run the full test suite after every task: `cd backend && uv run pytest`.
+### Backend Tests
+- Run after every task: `cd backend && uv run pytest`.
 - Verify manually where applicable (boot server, hit endpoint, check response).
 - Update `docs/state/test-plans.md` if new tests are added or existing ones change status.
+
+### End-to-End Tests (Playwright)
+- Write a Playwright e2e test for every milestone that covers the main user flows.
+- Tests go in `frontend/e2e/` directory.
+- The Playwright config must launch both the frontend and backend before running.
+- If errors occur, fix them before proceeding.
+- Record a video of the e2e test run (`playwright.config.ts` should set `captureVideo: true` for the test).
+- Commit the video to `docs/e2e/videos/` as reference.
 
 ## 5. Update Documentation (State)
 

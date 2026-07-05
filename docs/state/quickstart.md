@@ -40,7 +40,7 @@ App opens at `http://localhost:3000`.
 ## Running Tests
 
 ```bash
-# All tests
+# All backend tests
 cd backend
 uv run pytest
 
@@ -51,6 +51,16 @@ uv run pytest --cov=smart_trip
 uv run pytest tests/unit/
 uv run pytest tests/integration/
 uv run pytest tests/simulation/
+
+# End-to-end tests (Playwright)
+cd frontend
+pnpm e2e
+
+# Headed mode (watch the browser)
+pnpm e2e:headed
+
+# Or use the all-in-one script
+bash scripts/run-e2e.sh
 ```
 
 ## Playing the Game

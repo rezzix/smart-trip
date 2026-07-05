@@ -97,12 +97,12 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
     return (
       <>
         <ParticleBackground />
-        <main className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-6 p-8">
+        <main className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-6 px-6 py-20">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4 }}
-            className="flex flex-col items-center gap-6"
+            className="flex flex-col items-center gap-8"
           >
             <h2 className="glow-title-pink text-4xl font-bold">Waiting Room</h2>
 
@@ -172,7 +172,7 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
     return (
       <>
         <ParticleBackground />
-        <main className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-6 p-8">
+        <main className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-6 px-6 py-20">
           <AnimatePresence mode="wait">
             <motion.div
               key={question.question_index}
@@ -180,7 +180,7 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.3 }}
-              className="flex flex-col items-center gap-6"
+              className="flex w-full max-w-lg flex-col items-center gap-8"
             >
               <div className="flex items-center gap-4">
                 <TimerDisplay seconds={timer} />
@@ -253,12 +253,12 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
     return (
       <>
         <ParticleBackground />
-        <main className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-6 p-8">
+        <main className="relative z-10 flex min-h-screen flex-col items-start justify-start gap-8 px-6 py-20 overflow-y-auto">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="flex flex-col items-center gap-6"
+            className="flex w-full flex-col items-center gap-8"
           >
             <h2 className="glow-title-pink text-5xl font-bold">Game Over!</h2>
 

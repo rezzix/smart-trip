@@ -53,7 +53,7 @@ export default function Home() {
   return (
     <>
       <ParticleBackground />
-      <main className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-6 p-8">
+      <main className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-8 px-6 py-20">
         <h1 className="glow-title text-6xl font-bold tracking-tight" style={{ animationDelay: "0s" }}>
           Smart Trip
         </h1>

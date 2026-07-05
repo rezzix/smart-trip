@@ -65,7 +65,7 @@ export default function Home() {
   return (
     <>
       <ParticleBackground />
-      <main className="relative z-10 mx-auto flex min-h-dvh max-w-sm flex-col items-center gap-4 px-4 py-10">
+      <main className="relative z-10 mx-auto flex max-w-sm flex-col items-center gap-4 px-4 pt-12 pb-12">
         <h1 className="glow-title text-4xl font-bold tracking-tight">Smart Trip</h1>
         <p className="text-sm" style={{ color: "rgba(0,240,255,0.6)" }}>
           Online multiplayer educational game
@@ -87,27 +87,25 @@ export default function Home() {
 
         {error && <p className="text-sm text-red-400">{error}</p>}
 
-        <div className="mt-8 flex w-full gap-3">
-          <button
-            type="button"
-            className="neon-btn flex-1"
-            disabled={!name || !age}
-            onClick={handleCreate}
-          >
-            Create Game
-          </button>
-          <button
-            type="button"
-            className="neon-btn neon-btn-pink flex-1"
-            disabled={!name || !age}
-            onClick={() => {
-              const id = prompt("Enter game ID:");
-              if (id) handleJoinWithId(id);
-            }}
-          >
-            Join Game
-          </button>
-        </div>
+        <button
+          type="button"
+          className="neon-btn w-full"
+          disabled={!name || !age}
+          onClick={handleCreate}
+        >
+          Create Game
+        </button>
+        <button
+          type="button"
+          className="neon-btn neon-btn-pink w-full"
+          disabled={!name || !age}
+          onClick={() => {
+            const id = prompt("Enter game ID:");
+            if (id) handleJoinWithId(id);
+          }}
+        >
+          Join Game
+        </button>
       </main>
     </>
   );

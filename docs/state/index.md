@@ -16,9 +16,10 @@ okf_version: "0.1"
 | Charter definition | Done |
 | Backend scaffold | Done |
 | Frontend scaffold | Done |
-| Tests (pytest) | Done (2 passing) |
-| E2E (Playwright) | Done (2 passing) |
-| Seed data | Not started |
+| POC (engine + API + frontend) | Done |
+| Tests (pytest) | Done (21 passing) |
+| E2E (Playwright) | Done (3 passing) |
+| Seed data | Done (20 questions) |
 | CI/CD | Not started |
 
 ## State Contents
@@ -35,3 +36,4 @@ okf_version: "0.1"
 | 2026-07-04 | Project initialized, charter created, state folder created |
 | 2026-07-04 | Scaffold milestone complete: backend boots, frontend renders, tests pass |
 | 2026-07-05 | Playwright e2e tests added: welcome page + health check, video recorded |
+| 2026-07-05 | POC milestone complete: engine, REST API, WebSocket game loop, frontend lobby/question/results, 20 seed questions, 21 tests, Playwright e2e |

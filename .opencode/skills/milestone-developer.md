@@ -13,8 +13,11 @@ Follow these steps every time you are asked to develop a milestone (scaffold, PO
 
 Open `docs/charter/milestones.md` and read the deliverable table for the requested milestone. Every decision must align with the charter (tech stack, architecture, business rules, conventions).
 
-## 2. Plan Before You Build
+## 2. Clarify Before You Build
 
+- **Ask clarifying questions** about the milestone scope, priorities, and any ambiguity in the charter spec.
+- If the user's answers **bring new details** beyond the charter, add them to the relevant charter file and update milestones.md if needed.
+- If the user's answers **contradict the charter**, flag the contradiction and push the user to decide which to retain, then update the charter accordingly.
 - Open `docs/state/` to understand what is currently implemented.
 - Break the milestone into discrete tasks (one per deliverable cell in the milestone table).
 - For each task, identify which charter sections apply (tech choices, architecture patterns, business rules).
@@ -69,4 +72,4 @@ For each task in the milestone:
 
 - Commit all changes with a conventional commit message summarizing the milestone.
 - Optionally generate a brief milestone summary for the changelog.
-- Never update `docs/charter/` unless explicitly asked — that folder is stable.
+- Never update `docs/charter/` unless explicitly asked or unless the clarification phase produces new or contradictory information that the user agrees to update.

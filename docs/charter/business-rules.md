@@ -24,7 +24,8 @@ timestamp: 2026-07-04T00:00:00Z
 ## Real-time Gameplay
 
 - There are NO turns. Every player acts simultaneously.
-- Every round: Choose City → Travel → Mini Game → Questions → Shared World Challenge → Results → Rewards → Next Round.
+- Every round: Choose City → Travel → Mini Game → Questions (3–5 per round) → Shared World Challenge → Results → Rewards → Next Round.
+- Each question has a configurable timer (default: 10 seconds). If a player does not answer in time, they score 0 for that question.
 
 ## World
 
@@ -41,6 +42,8 @@ Each city contains: name, country, coordinates, picture, difficulty, badge, fact
 - Questions are external — never hardcode educational content.
 - Supported formats: JSON.
 - Categories: Math, Science, Technology, History, Geography, Economics, Environment, Culture.
+- Questions are multiple choice with exactly 4 choices each.
+- Questions should be short and concise.
 - Each question stores: difficulty, answer, choices, assets, explanation, source, min_age, max_age.
 - The engine filters questions based on the ages of players in the game. A question is only selected if all players' ages fall within its `min_age`–`max_age` range (or if the range is omitted, the question is available to all ages).
 - This allows content creators to target specific age groups per question.
@@ -68,6 +71,13 @@ Each city contains: name, country, coordinates, picture, difficulty, badge, fact
 
 - Everything possible should be data-driven: Cities, Questions, Badges, Achievements, Themes, Configuration, Localization, Mini-game metadata, Rewards.
 - All should be editable without touching engine code.
+
+## Scoring
+
+- Each correct answer awards 1 point (or 1 coin).
+- No negative points for incorrect answers.
+- The player with the most points at the end of the game wins.
+- Scoring for mini games and shared challenges is defined per mini game plugin.
 
 ## Minimum Viable Content (First Release)
 

@@ -27,14 +27,18 @@ A version of the application with at least core functionality working and testab
 
 **Goal:** A single round of gameplay is demonstrable — lobby, city selection, questions, scoring — with virtual players over WebSocket.
 
+**Game flow (simplified for POC):** Lobby → Question → Question → Question (3–5) → Results → Next Round. Travel animation, mini games, and shared challenges are skipped for POC.
+
+**Question timer:** 10 seconds per question. Unanswered questions score 0.
+
 | Area | Deliverable |
 |------|-------------|
-| Engine | Core round lifecycle, question loading and selection, basic scoring |
-| API | REST create/join, WebSocket game loop |
+| Engine | Core round lifecycle, question loading and selection (3–5 per round), 10s timer, basic scoring (1 point per correct answer) |
+| API | REST create/join/leave, WebSocket game loop with typed messages |
 | Repositories | In-memory implementation for all entities |
-| Frontend | Minimal UI for lobby, question screen, results screen |
-| Tests | Unit tests for engine, integration tests for API, one game simulation test |
-| Data | Seed JSON for cities, questions (one category), badges |
+| Frontend | Minimal UI for lobby (name + age + create/join), question screen (timer + 4 choices), results screen (scores) |
+| Tests | Unit tests for engine, integration tests for API (REST + WebSocket), one game simulation test with 2+ virtual players |
+| Data | Seed JSON for 5 cities, 20 questions (one category, e.g. Geography), 2 badges |
 
 ## MVP (Minimum Viable Product)
 

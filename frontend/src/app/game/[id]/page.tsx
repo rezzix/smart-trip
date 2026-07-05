@@ -193,7 +193,7 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
                 {question.text}
               </h2>
 
-              <div className="grid w-full max-w-md grid-cols-1 gap-3">
+              <div className="grid w-full max-w-md grid-cols-2 gap-4">
                 {question.choices.map((choice, i) => {
                   const myResult = roundResult?.results.find((r) => r.player_id === playerId);
                   const isSelected = myResult && question.choices.indexOf(choice) !== -1;

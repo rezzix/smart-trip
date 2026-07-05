@@ -6,7 +6,7 @@ export default defineConfig({
   retries: 0,
   use: {
     baseURL: "http://localhost:3000",
-    video: "on",
+    video: { mode: "on", size: { width: 1280, height: 720 } },
     trace: "on-first-retry",
   },
   webServer: [

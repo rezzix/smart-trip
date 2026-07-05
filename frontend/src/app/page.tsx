@@ -35,7 +35,7 @@ export default function Home() {
       playerAge: String(playerAge),
       isHost: String(isHost),
     });
-    setTimeout(() => router.push(`/game/${gameId}?${params}`), 300);
+    router.push(`/game/${gameId}?${params}`);
   };
 
   const handleCreate = async () => {
@@ -65,56 +65,48 @@ export default function Home() {
   return (
     <>
       <ParticleBackground />
-      <main className="relative z-10 flex min-h-dvh w-full flex-col items-center gap-6 px-6 pb-28 pt-12 overflow-y-auto">
-        <div className="flex flex-col items-center gap-3">
-          <h1 className="glow-title text-4xl sm:text-6xl font-bold tracking-tight" style={{ animationDelay: "0s" }}>
-            Smart Trip
-          </h1>
-          <p className="fade-in-up text-sm sm:text-lg" style={{ animationDelay: "0.2s", color: "rgba(0,240,255,0.7)" }}>
-            Online multiplayer educational game
-          </p>
-        </div>
+      <main className="relative z-10 mx-auto flex min-h-dvh max-w-sm flex-col items-center gap-4 px-4 py-10">
+        <h1 className="glow-title text-4xl font-bold tracking-tight">Smart Trip</h1>
+        <p className="text-sm" style={{ color: "rgba(0,240,255,0.6)" }}>
+          Online multiplayer educational game
+        </p>
 
-        <div className="fade-in-up flex w-full max-w-sm flex-col items-center gap-3" style={{ animationDelay: "0.4s" }}>
-          <input
-            className="neon-input w-full"
-            placeholder="Your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <input
-            className="neon-input w-full"
-            placeholder="Your age"
-            type="number"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
-          />
+        <input
+          className="neon-input w-full"
+          placeholder="Your name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          className="neon-input w-full"
+          placeholder="Your age"
+          type="number"
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+        />
 
-          {error && <p className="fade-in-up text-red-400 text-sm">{error}</p>}
-        </div>
+        {error && <p className="text-sm text-red-400">{error}</p>}
 
-        <div className="fade-in-up fixed bottom-0 left-0 right-0 z-20 flex justify-center gap-3 bg-gradient-to-t from-[#0a0a1a] via-[#0a0a1a] to-transparent px-6 pt-4 pb-8" style={{ animationDelay: "0.6s" }}>
-          <div className="flex w-full max-w-sm gap-3">
-            <button
-              type="button"
-              className="neon-btn flex-1"
-              disabled={!name || !age}
-              onClick={handleCreate}
-            >
-              Create Game
-            </button>
-            <button
-              type="button"
-              className="neon-btn neon-btn-pink flex-1"
-              disabled={!name || !age}
-              onClick={() => {
-                const id = prompt("Enter game ID:");
-                if (id) handleJoinWithId(id);
-              }}
-            >
-              Join Game
-            </button>
-          </div>
+        <div className="mt-8 flex w-full gap-3">
+          <button
+            type="button"
+            className="neon-btn flex-1"
+            disabled={!name || !age}
+            onClick={handleCreate}
+          >
+            Create Game
+          </button>
+          <button
+            type="button"
+            className="neon-btn neon-btn-pink flex-1"
+            disabled={!name || !age}
+            onClick={() => {
+              const id = prompt("Enter game ID:");
+              if (id) handleJoinWithId(id);
+            }}
+          >
+            Join Game
+          </button>
         </div>
       </main>
     </>

@@ -65,7 +65,7 @@ export default function Home() {
   return (
     <>
       <ParticleBackground />
-      <main className="relative z-10 flex min-h-dvh flex-col items-center gap-6 px-6 pt-12 pb-8 overflow-y-auto">
+      <main className="relative z-10 grid min-h-dvh w-full grid-rows-[auto_1fr_auto] justify-items-center gap-6 px-6 pt-12 pb-8">
         <div className="flex flex-col items-center gap-3">
           <h1 className="glow-title text-4xl sm:text-6xl font-bold tracking-tight" style={{ animationDelay: "0s" }}>
             Smart Trip
@@ -75,25 +75,25 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="fade-in-up flex w-full max-w-sm flex-col gap-3" style={{ animationDelay: "0.4s" }}>
+        <div className="fade-in-up flex w-full max-w-sm flex-col items-center gap-3 self-start justify-self-center" style={{ animationDelay: "0.4s" }}>
           <input
-            className="neon-input"
+            className="neon-input w-full"
             placeholder="Your name"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
           <input
-            className="neon-input"
+            className="neon-input w-full"
             placeholder="Your age"
             type="number"
             value={age}
             onChange={(e) => setAge(e.target.value)}
           />
+
+          {error && <p className="fade-in-up text-red-400 text-sm">{error}</p>}
         </div>
 
-        {error && <p className="fade-in-up text-red-400 text-sm">{error}</p>}
-
-        <div className="fade-in-up mt-auto flex w-full max-w-sm gap-3" style={{ animationDelay: "0.6s" }}>
+        <div className="fade-in-up flex w-full max-w-sm gap-3" style={{ animationDelay: "0.6s" }}>
           <button
             type="button"
             className="neon-btn flex-1"

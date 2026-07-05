@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { createGame, joinGame } from "@/api/client";
 import ParticleBackground from "@/components/ParticleBackground";
 import { playClick, playStart } from "@/lib/sound";
+
+const STORAGE_KEY = "smart_trip_player";
 
 export default function Home() {
   const router = useRouter();
@@ -14,19 +16,35 @@ export default function Home() {
   const [age, setAge] = useState("");
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const { name: n, age: a } = JSON.parse(saved);
+        if (n) setName(n);
+        if (a) setAge(a);
+      } catch { /* ignore */ }
+    }
+  }, []);
+
+  const saveAndNavigate = (gameId: string, playerId: string, playerName: string, playerAge: number, isHost: boolean) => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ name: playerName, age: playerAge }));
+    const params = new URLSearchParams({
+      playerId,
+      playerName,
+      playerAge: String(playerAge),
+      isHost: String(isHost),
+    });
+    setTimeout(() => router.push(`/game/${gameId}?${params}`), 300);
+  };
+
   const handleCreate = async () => {
     if (!name || !age) return;
     playClick();
     try {
       const res = await createGame(name, parseInt(age));
       playStart();
-      const params = new URLSearchParams({
-        playerId: res.player_id,
-        playerName: name,
-        playerAge: String(age),
-        isHost: "true",
-      });
-      setTimeout(() => router.push(`/game/${res.game_id}?${params}`), 300);
+      saveAndNavigate(res.game_id, res.player_id, name, parseInt(age), true);
     } catch {
       setError("Failed to create game");
     }
@@ -38,13 +56,7 @@ export default function Home() {
     try {
       const res = await joinGame(joinId, name, parseInt(age));
       playStart();
-      const params = new URLSearchParams({
-        playerId: res.player_id,
-        playerName: name,
-        playerAge: String(age),
-        isHost: "false",
-      });
-      setTimeout(() => router.push(`/game/${res.game_id}?${params}`), 300);
+      saveAndNavigate(res.game_id, res.player_id, name, parseInt(age), false);
     } catch {
       setError("Game not found or already started");
     }

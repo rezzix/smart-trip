@@ -2,18 +2,34 @@
 
 import { use, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { useGameStore } from "@/stores/game";
+import ParticleBackground from "@/components/ParticleBackground";
+import { playClick, playCorrect, playWrong, playTimerWarning, playFanfare, playReveal } from "@/lib/sound";
+
+function TimerDisplay({ seconds }: { seconds: number }) {
+  const urgent = seconds <= 3;
+  useEffect(() => {
+    if (urgent) playTimerWarning();
+  }, [urgent]);
+
+  return (
+    <div className={`timer-ring ${urgent ? "urgent" : ""}`}>
+      {seconds}
+    </div>
+  );
+}
 
 export default function GamePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const searchParams = useSearchParams();
   const didInit = useRef(false);
+  const [timer, setTimer] = useState(10);
 
   const {
     screen, players, isHost, playerId, question, roundResult,
-    finalScores, winner, error, sendMessage, setPlayerInfo,
-    setGameId, setIsHost, setScreen, connectWs,
+    finalScores, winner, error, sendMessage,
   } = useGameStore();
 
   useEffect(() => {
@@ -31,8 +47,42 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
     }
 
     useGameStore.setState({ playerName: name, playerAge: parseInt(age), playerId: pid, gameId: id, isHost: host, screen: "lobby", players: [{ id: pid, name, score: 0 }] });
-    connectWs(id, pid);
+    useGameStore.getState().connectWs(id, pid);
   }, []);
+
+  useEffect(() => {
+    if (screen === "question" && question) {
+      setTimer(question.time_remaining);
+      const interval = setInterval(() => {
+        setTimer((t) => {
+          if (t <= 1) {
+            clearInterval(interval);
+            return 0;
+          }
+          return t - 1;
+        });
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [screen, question]);
+
+  useEffect(() => {
+    if (roundResult) {
+      const myResult = roundResult.results.find((r) => r.player_id === playerId);
+      if (myResult) {
+        if (myResult.correct) playCorrect();
+        else playWrong();
+      }
+    }
+  }, [roundResult, playerId]);
+
+  useEffect(() => {
+    if (screen === "results") {
+      playFanfare();
+      const t = setTimeout(() => playReveal(), 500);
+      return () => clearTimeout(t);
+    }
+  }, [screen]);
 
   if (error) {
     return (
@@ -45,102 +95,228 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
 
   if (screen === "lobby" || !playerId) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
-        <h2 className="text-3xl font-bold">Waiting Room</h2>
-        <p className="text-gray-400">Game ID: <span className="font-mono text-white">{id}</span></p>
-        <p className="text-gray-400">Invite friends by sharing this ID</p>
-
-        <div className="flex flex-col gap-2">
-          <p className="text-sm text-gray-500">Players ({players.length})</p>
-          {players.map((p) => (
-            <div key={p.id} className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-green-500" />
-              <span>{p.name}{p.id === playerId ? " (you)" : ""}</span>
-              {p.id === players[0]?.id && <span className="text-xs text-yellow-400">(host)</span>}
-            </div>
-          ))}
-        </div>
-
-        {isHost && players.length >= 2 && (
-          <button
-            type="button"
-            className="rounded-lg bg-green-600 px-6 py-3 font-medium transition hover:bg-green-500"
-            onClick={() => sendMessage("start_game")}
+      <>
+        <ParticleBackground />
+        <main className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-6 p-8">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4 }}
+            className="flex flex-col items-center gap-6"
           >
-            Start Game
-          </button>
-        )}
+            <h2 className="glow-title-pink text-4xl font-bold">Waiting Room</h2>
 
-        {isHost && players.length < 2 && (
-          <p className="text-sm text-gray-500">Waiting for at least 2 players...</p>
-        )}
-      </main>
+            <div className="neon-card p-6 text-center">
+              <p className="text-sm text-gray-500 mb-1">Game ID</p>
+              <p className="font-mono text-2xl font-bold" style={{ color: "var(--neon-cyan)" }}>
+                {id}
+              </p>
+              <p className="mt-2 text-sm" style={{ color: "rgba(0,240,255,0.6)" }}>
+                Share this ID with friends to join
+              </p>
+            </div>
+
+            <div className="neon-card w-80 p-4">
+              <p className="text-sm mb-3" style={{ color: "rgba(0,240,255,0.7)" }}>
+                Players ({players.length})
+              </p>
+              <div className="flex flex-col gap-2">
+                {players.map((p, i) => (
+                  <motion.div
+                    key={p.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                    className="flex items-center gap-3"
+                  >
+                    <span className="h-3 w-3 rounded-full" style={{
+                      background: p.id === playerId ? "var(--neon-cyan)" : "var(--neon-pink)",
+                      boxShadow: `0 0 6px ${p.id === playerId ? "var(--neon-cyan)" : "var(--neon-pink)"}`,
+                    }} />
+                    <span>{p.name}{p.id === playerId ? " (you)" : ""}</span>
+                    {p.id === players[0]?.id && (
+                      <span className="text-xs px-2 py-0.5 rounded" style={{
+                        background: "rgba(255, 221, 0, 0.15)",
+                        color: "var(--neon-yellow)",
+                      }}>HOST</span>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {isHost && players.length >= 2 && (
+              <motion.button
+                type="button"
+                className="neon-btn neon-btn-pink neon-btn-start"
+                onClick={() => { playClick(); sendMessage("start_game"); }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Start Game
+              </motion.button>
+            )}
+
+            {isHost && players.length < 2 && (
+              <p className="text-sm" style={{ color: "rgba(255,0,170,0.6)" }}>
+                Waiting for at least 2 players...
+              </p>
+            )}
+          </motion.div>
+        </main>
+      </>
     );
   }
 
   if (screen === "question" && question) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
-        <div className="flex gap-2 text-sm text-gray-500">
-          <span>Question {question.question_index + 1} of {question.total}</span>
-        </div>
-
-        <h2 className="max-w-lg text-center text-2xl font-semibold">{question.text}</h2>
-
-        <div className="grid w-full max-w-md grid-cols-1 gap-3">
-          {question.choices.map((choice, i) => (
-            <button
-              key={`${question.question_index}-${i}`}
-              type="button"
-              className="rounded-lg border border-gray-600 px-6 py-4 text-left font-medium transition hover:bg-gray-800"
-              onClick={() => sendMessage("answer", { choice: i })}
+      <>
+        <ParticleBackground />
+        <main className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-6 p-8">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={question.question_index}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.3 }}
+              className="flex flex-col items-center gap-6"
             >
-              <span className="mr-3 text-gray-500">{String.fromCharCode(65 + i)}.</span>
-              {choice}
-            </button>
-          ))}
-        </div>
+              <div className="flex items-center gap-4">
+                <TimerDisplay seconds={timer} />
+                <div className="text-sm" style={{ color: "rgba(0,240,255,0.6)" }}>
+                  Question {question.question_index + 1} of {question.total}
+                </div>
+              </div>
 
-        {roundResult && (
-          <div className="mt-4 rounded-lg border border-gray-700 bg-gray-800 p-4">
-            {roundResult.results.filter((r) => r.player_id === playerId).map((r) => (
-              <p key={r.player_id} className={r.correct ? "text-green-400" : "text-red-400"}>
-                {r.correct ? "Correct!" : "Wrong!"} — {roundResult.explanation}
-              </p>
-            ))}
-          </div>
-        )}
-      </main>
+              <h2 className="max-w-lg text-center text-2xl font-semibold">
+                {question.text}
+              </h2>
+
+              <div className="grid w-full max-w-md grid-cols-1 gap-3">
+                {question.choices.map((choice, i) => {
+                  const myResult = roundResult?.results.find((r) => r.player_id === playerId);
+                  const isSelected = myResult && question.choices.indexOf(choice) !== -1;
+                  const isCorrectChoice = myResult && i === roundResult?.correct_answer;
+
+                  let extraClass = "";
+                  if (roundResult) {
+                    if (isCorrectChoice) extraClass = "correct";
+                    else if (isSelected && !myResult?.correct) extraClass = "wrong";
+                  }
+
+                  return (
+                    <motion.button
+                      key={`${question.question_index}-${i}`}
+                      type="button"
+                      className={`choice-btn ${extraClass}`}
+                      onClick={() => {
+                        if (!roundResult) {
+                          playClick();
+                          sendMessage("answer", { choice: i });
+                        }
+                      }}
+                      disabled={!!roundResult}
+                      whileHover={!roundResult ? { scale: 1.02, x: 4 } : {}}
+                      whileTap={!roundResult ? { scale: 0.98 } : {}}
+                    >
+                      <span className="mr-3" style={{ color: "var(--neon-cyan)" }}>
+                        {String.fromCharCode(65 + i)}.
+                      </span>
+                      {choice}
+                    </motion.button>
+                  );
+                })}
+              </div>
+
+              {roundResult && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="neon-card w-full max-w-md p-4"
+                >
+                  {roundResult.results.filter((r) => r.player_id === playerId).map((r) => (
+                    <p key={r.player_id} className={r.correct ? "text-[#00ff88]" : "text-[#ff4444]"}>
+                      {r.correct ? "✓ Correct!" : "✗ Wrong!"} — {roundResult.explanation}
+                    </p>
+                  ))}
+                </motion.div>
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </main>
+      </>
     );
   }
 
   if (screen === "results") {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
-        <h2 className="text-3xl font-bold">Game Over!</h2>
-        <p className="text-xl text-yellow-400">Winner: {winner}</p>
+      <>
+        <ParticleBackground />
+        <main className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-6 p-8">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col items-center gap-6"
+          >
+            <h2 className="glow-title-pink text-5xl font-bold">Game Over!</h2>
 
-        <div className="flex flex-col gap-2">
-          {finalScores.map((p, i) => (
-            <div key={p.player_id} className="flex w-80 items-center justify-between rounded-lg border border-gray-700 bg-gray-800 px-4 py-3">
-              <span>
-                {i + 1}. {p.name}{p.player_id === playerId ? " (you)" : ""}
-              </span>
-              <span className="font-bold">{p.score} pts</span>
+            <motion.p
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-2xl font-bold podium-1"
+            >
+              Winner: {winner}
+            </motion.p>
+
+            <div className="flex flex-col gap-3 w-80">
+              {finalScores.map((p, i) => (
+                <motion.div
+                  key={p.player_id}
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5 + i * 0.15 }}
+                  className={`neon-card flex items-center justify-between px-4 py-3 ${i === 0 ? "podium-1" : i === 1 ? "podium-2" : i === 2 ? "podium-3" : ""}`}
+                >
+                  <span className="flex items-center gap-2">
+                    <span className="text-lg font-bold">{i + 1}.</span>
+                    <span>{p.name}{p.player_id === playerId ? " (you)" : ""}</span>
+                  </span>
+                  <motion.span
+                    className="font-bold text-lg"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.8 + i * 0.15 }}
+                  >
+                    {p.score} pts
+                  </motion.span>
+                </motion.div>
+              ))}
             </div>
-          ))}
-        </div>
 
-        <a href="/" className="rounded-lg bg-blue-600 px-6 py-3 font-medium transition hover:bg-blue-500">
-          Play Again
-        </a>
-      </main>
+            <motion.a
+              href="/"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.2 }}
+              className="neon-btn neon-btn-pink inline-block text-center"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={playClick}
+            >
+              Play Again
+            </motion.a>
+          </motion.div>
+        </main>
+      </>
     );
   }
 
   return (
     <main className="flex min-h-screen items-center justify-center p-8">
-      <p className="text-gray-400">Loading...</p>
+      <p style={{ color: "rgba(0,240,255,0.6)" }}>Loading...</p>
     </main>
   );
 }

@@ -1,4 +1,10 @@
 import { test, expect } from "@playwright/test";
+async function dismissOverlay(page: any) {
+  await page.evaluate(() => {
+    const overlay = document.querySelector("nextjs-portal");
+    if (overlay) overlay.remove();
+  }).catch(() => {});
+}
 
 test.describe("Scaffold", () => {
   test("welcome page renders with title and action buttons", async ({ page }) => {

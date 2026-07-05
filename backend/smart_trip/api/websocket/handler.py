@@ -97,7 +97,10 @@ async def game_websocket(ws: WebSocket, game_id: str, player_id: str):
                 if player_id not in current_round.answers:
                     current_round.answers[player_id] = choice
 
-                    if round_service.all_players_answered(current_round, room.players):
+                    all_answered = round_service.all_players_answered(current_round, room.players)
+                    timed_out = round_service.time_expired(current_round)
+
+                    if all_answered or timed_out:
                         await _send_results(manager, game_id, round_service, room.players)
                         current_round.current_question_index += 1
                         if current_round.current_question_index < len(current_round.questions):

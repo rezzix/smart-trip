@@ -97,58 +97,60 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
     return (
       <>
         <ParticleBackground />
-        <main className="relative z-10 flex min-h-dvh flex-col items-center justify-between px-6 pt-16 pb-10">
+        <main className="relative z-10 flex min-h-dvh w-full flex-col items-center px-6 pt-16 pb-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4 }}
-            className="flex w-full max-w-sm flex-col items-center gap-6"
+            className="flex w-full max-w-sm flex-1 flex-col items-center gap-6"
           >
-            <h2 className="glow-title-pink text-4xl font-bold">Waiting Room</h2>
+            <div className="flex w-full flex-col items-center gap-6">
+              <h2 className="glow-title-pink text-4xl font-bold">Waiting Room</h2>
 
-            <div className="neon-card p-6 text-center">
-              <p className="text-sm text-gray-500 mb-1">Game ID</p>
-              <p className="font-mono text-2xl font-bold" style={{ color: "var(--neon-cyan)" }}>
-                {id}
-              </p>
-              <p className="mt-2 text-sm" style={{ color: "rgba(0,240,255,0.6)" }}>
-                Share this ID with friends to join
-              </p>
-            </div>
+              <div className="neon-card p-6 text-center w-full">
+                <p className="text-sm text-gray-500 mb-1">Game ID</p>
+                <p className="font-mono text-2xl font-bold" style={{ color: "var(--neon-cyan)" }}>
+                  {id}
+                </p>
+                <p className="mt-2 text-sm" style={{ color: "rgba(0,240,255,0.6)" }}>
+                  Share this ID with friends to join
+                </p>
+              </div>
 
-            <div className="neon-card w-80 p-4">
-              <p className="text-sm mb-3" style={{ color: "rgba(0,240,255,0.7)" }}>
-                Players ({players.length})
-              </p>
-              <div className="flex flex-col gap-2">
-                {players.map((p, i) => (
-                  <motion.div
-                    key={p.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    className="flex items-center gap-3"
-                  >
-                    <span className="h-3 w-3 rounded-full" style={{
-                      background: p.id === playerId ? "var(--neon-cyan)" : "var(--neon-pink)",
-                      boxShadow: `0 0 6px ${p.id === playerId ? "var(--neon-cyan)" : "var(--neon-pink)"}`,
-                    }} />
-                    <span>{p.name}{p.id === playerId ? " (you)" : ""}</span>
-                    {p.id === players[0]?.id && (
-                      <span className="text-xs px-2 py-0.5 rounded" style={{
-                        background: "rgba(255, 221, 0, 0.15)",
-                        color: "var(--neon-yellow)",
-                      }}>HOST</span>
-                    )}
-                  </motion.div>
-                ))}
+              <div className="neon-card p-4 w-full">
+                <p className="text-sm mb-3" style={{ color: "rgba(0,240,255,0.7)" }}>
+                  Players ({players.length})
+                </p>
+                <div className="flex flex-col gap-2">
+                  {players.map((p, i) => (
+                    <motion.div
+                      key={p.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.1 }}
+                      className="flex items-center gap-3"
+                    >
+                      <span className="h-3 w-3 rounded-full" style={{
+                        background: p.id === playerId ? "var(--neon-cyan)" : "var(--neon-pink)",
+                        boxShadow: `0 0 6px ${p.id === playerId ? "var(--neon-cyan)" : "var(--neon-pink)"}`,
+                      }} />
+                      <span>{p.name}{p.id === playerId ? " (you)" : ""}</span>
+                      {p.id === players[0]?.id && (
+                        <span className="text-xs px-2 py-0.5 rounded" style={{
+                          background: "rgba(255, 221, 0, 0.15)",
+                          color: "var(--neon-yellow)",
+                        }}>HOST</span>
+                      )}
+                    </motion.div>
+                  ))}
+                </div>
               </div>
             </div>
 
             {isHost && (
               <motion.button
                 type="button"
-                className="neon-btn neon-btn-pink neon-btn-start mt-8"
+                className="neon-btn neon-btn-pink neon-btn-start mt-auto"
                 onClick={() => { playClick(); sendMessage("start_game"); }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -252,42 +254,44 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="flex w-full flex-col items-center gap-8"
+            className="flex w-full max-w-sm flex-1 flex-col items-center gap-8"
           >
-            <h2 className="glow-title-pink text-5xl font-bold">Game Over!</h2>
+            <div className="flex w-full flex-col items-center gap-8">
+              <h2 className="glow-title-pink text-5xl font-bold">Game Over!</h2>
 
-            <motion.p
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className={`text-2xl font-bold ${isTie ? "text-[#ffdd00]" : "podium-1"}`}
-            >
-              {isTie ? "It's a tie!" : `Winner: ${winner}`}
-            </motion.p>
+              <motion.p
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className={`text-2xl font-bold ${isTie ? "text-[#ffdd00]" : "podium-1"}`}
+              >
+                {isTie ? "It's a tie!" : `Winner: ${winner}`}
+              </motion.p>
 
-            <div className="flex flex-col gap-3 w-80">
-              {finalScores.map((p, i) => (
-                <motion.div
-                  key={p.player_id}
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.5 + i * 0.15 }}
-                  className={`neon-card flex items-center justify-between px-4 py-3 ${i === 0 ? "podium-1" : i === 1 ? "podium-2" : i === 2 ? "podium-3" : ""}`}
-                >
-                  <span className="flex items-center gap-2">
-                    <span className="text-lg font-bold">{i + 1}.</span>
-                    <span>{p.name}{p.player_id === playerId ? " (you)" : ""}</span>
-                  </span>
-                  <motion.span
-                    className="font-bold text-lg"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.8 + i * 0.15 }}
+              <div className="flex w-full flex-col gap-3">
+                {finalScores.map((p, i) => (
+                  <motion.div
+                    key={p.player_id}
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 + i * 0.15 }}
+                    className={`neon-card flex items-center justify-between px-4 py-3 ${i === 0 ? "podium-1" : i === 1 ? "podium-2" : i === 2 ? "podium-3" : ""}`}
                   >
-                    {p.score} pts
-                  </motion.span>
-                </motion.div>
-              ))}
+                    <span className="flex items-center gap-2">
+                      <span className="text-lg font-bold">{i + 1}.</span>
+                      <span>{p.name}{p.player_id === playerId ? " (you)" : ""}</span>
+                    </span>
+                    <motion.span
+                      className="font-bold text-lg"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.8 + i * 0.15 }}
+                    >
+                      {p.score} pts
+                    </motion.span>
+                  </motion.div>
+                ))}
+              </div>
             </div>
 
             <motion.a
@@ -295,7 +299,7 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.2 }}
-              className="neon-btn neon-btn-pink mt-8 inline-block text-center"
+              className="neon-btn neon-btn-pink mt-auto self-stretch text-center"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={playClick}

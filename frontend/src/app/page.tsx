@@ -65,9 +65,9 @@ export default function Home() {
   return (
     <>
       <ParticleBackground />
-      <main className="relative z-10 flex min-h-dvh flex-col items-center gap-3 px-4 pt-24 pb-8" style={{ maxWidth: 384, marginInline: "auto" }}>
-        <h1 className="glow-title text-4xl font-bold tracking-tight">Smart Trip</h1>
-        <p style={{ fontSize: 14, color: "rgba(0,240,255,0.6)" }}>Online multiplayer educational game</p>
+      <main style={{ margin: "0 auto", maxWidth: 384, padding: "80px 16px 120px" }}>
+        <h1 className="glow-title text-4xl font-bold tracking-tight mb-2">Smart Trip</h1>
+        <p style={{ fontSize: 14, color: "rgba(0,240,255,0.6)", marginBottom: 24 }}>Online multiplayer educational game</p>
 
         <input
           className="neon-input w-full"
@@ -83,9 +83,11 @@ export default function Home() {
           onChange={(e) => setAge(e.target.value)}
         />
 
-        {error && <p style={{ fontSize: 14, color: "#ff4444" }}>{error}</p>}
+        {error && <p style={{ fontSize: 14, color: "#ff4444", marginTop: 8 }}>{error}</p>}
+      </main>
 
-        <div className="mt-auto flex w-full flex-col gap-3">
+      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 20, background: "linear-gradient(to top, #0a0a1a, transparent)", padding: "24px 16px 40px" }}>
+        <div style={{ maxWidth: 384, margin: "0 auto", display: "flex", flexDirection: "column", gap: 12 }}>
           <button
             type="button"
             className="neon-btn w-full"
@@ -106,7 +108,7 @@ export default function Home() {
             Join Game
           </button>
         </div>
-      </main>
+      </div>
     </>
   );
 }

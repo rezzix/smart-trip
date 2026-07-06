@@ -162,7 +162,7 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
     return (
       <>
         <ParticleBackground />
-        <main className="relative z-10 flex min-h-screen flex-col items-center justify-center gap-6 px-6 py-20">
+        <main style={{ margin: "0 auto", maxWidth: 384, padding: "60px 16px 180px" }}>
           <AnimatePresence mode="wait">
             <motion.div
               key={question.question_index}
@@ -170,7 +170,7 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.3 }}
-              className="flex w-full max-w-lg flex-col items-center gap-8"
+              className="flex flex-col items-center gap-6"
             >
               <div className="flex items-center gap-4">
                 <TimerDisplay seconds={timer} />
@@ -179,51 +179,15 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
                 </div>
               </div>
 
-              <h2 className="max-w-lg text-center text-2xl font-semibold">
+              <h2 className="text-center text-xl font-semibold">
                 {question.text}
               </h2>
-
-              <div className="grid w-full max-w-md grid-cols-2 gap-4">
-                {question.choices.map((choice, i) => {
-                  const myResult = roundResult?.results.find((r) => r.player_id === playerId);
-                  const isSelected = myResult && question.choices.indexOf(choice) !== -1;
-                  const isCorrectChoice = myResult && i === roundResult?.correct_answer;
-
-                  let extraClass = "";
-                  if (roundResult) {
-                    if (isCorrectChoice) extraClass = "correct";
-                    else if (isSelected && !myResult?.correct) extraClass = "wrong";
-                  }
-
-                  return (
-                    <motion.button
-                      key={`${question.question_index}-${i}`}
-                      type="button"
-                      className={`choice-btn ${extraClass}`}
-                      onClick={() => {
-                        if (!roundResult) {
-                          playClick();
-                          sendMessage("answer", { choice: i });
-                        }
-                      }}
-                      disabled={!!roundResult}
-                      whileHover={!roundResult ? { scale: 1.02, x: 4 } : {}}
-                      whileTap={!roundResult ? { scale: 0.98 } : {}}
-                    >
-                      <span className="mr-3" style={{ color: "var(--neon-cyan)" }}>
-                        {String.fromCharCode(65 + i)}.
-                      </span>
-                      {choice}
-                    </motion.button>
-                  );
-                })}
-              </div>
 
               {roundResult && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="neon-card w-full max-w-md p-4"
+                  className="neon-card w-full p-4"
                 >
                   {roundResult.results.filter((r) => r.player_id === playerId).map((r) => (
                     <p key={r.player_id} className={r.correct ? "text-[#00ff88]" : "text-[#ff4444]"}>
@@ -235,11 +199,44 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
             </motion.div>
           </AnimatePresence>
         </main>
-      </>
-    );
-  }
 
-  if (screen === "results") {
+        <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 20, background: "linear-gradient(to top, #0a0a1a, transparent)", padding: "20px 16px 32px" }}>
+          <div style={{ maxWidth: 384, margin: "0 auto" }}>
+            <div className="grid w-full grid-cols-2 gap-3">
+              {question.choices.map((choice, i) => {
+                const myResult = roundResult?.results.find((r) => r.player_id === playerId);
+                const isSelected = myResult && question.choices.indexOf(choice) !== -1;
+                const isCorrectChoice = myResult && i === roundResult?.correct_answer;
+
+                let extraClass = "";
+                if (roundResult) {
+                  if (isCorrectChoice) extraClass = "correct";
+                  else if (isSelected && !myResult?.correct) extraClass = "wrong";
+                }
+
+                return (
+                  <button
+                    key={`${question.question_index}-${i}`}
+                    type="button"
+                    className={`choice-btn ${extraClass}`}
+                    onClick={() => {
+                      if (!roundResult) {
+                        playClick();
+                        sendMessage("answer", { choice: i });
+                      }
+                    }}
+                    disabled={!!roundResult}
+                  >
+                    <span className="mr-2" style={{ color: "var(--neon-cyan)" }}>
+                      {String.fromCharCode(65 + i)}.
+                    </span>
+                    {choice}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
     return (
       <>
         <ParticleBackground />

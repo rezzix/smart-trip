@@ -237,6 +237,11 @@ export default function GamePage({ params }: { params: Promise<{ id: string }> }
             </div>
           </div>
         </div>
+      </>
+    );
+  }
+
+  if (screen === "results") {
     return (
       <>
         <ParticleBackground />
